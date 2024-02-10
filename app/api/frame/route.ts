@@ -9,8 +9,17 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   
   const name = randomCollection.metadata["name"]
   const description = randomCollection.metadata["description"]
+
   const image = randomCollection.metadata["image"]
-  const fixedImage = parseImageDataURI(image)
+  const imageData = randomCollection.metadata["image_data"]
+  
+  let targetImage;
+  if (image) {
+    targetImage = image
+  }else if (imageData) {
+    targetImage = imageData
+  }
+  const fixedImage = parseImageDataURI(targetImage)
   
   return new NextResponse(
     getFrameHtmlResponse({
