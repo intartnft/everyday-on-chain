@@ -4,6 +4,20 @@ const abi = [
     "function tokenURI(uint256) public view returns (string)"
 ]
 
+export function parseImageDataURI(uri: string): string {
+    if (uri.includes("base64")) {
+        return uri
+    }
+
+    if (uri.includes("svg") && uri.includes("utf8")) {
+        const imageData = uri.split(",")[1]
+        const base64 = Buffer.from(imageData).toString('base64')
+        return "data:image/svg+xml;base64," + base64
+    }
+
+    return uri
+}
+
 export function parseDataURI(uri: string): string {
     const parsed = new URL(uri);
     const match = /^[^/]+\/[^,;]+(?:[^,]*?)(;base64)?,([\s\S]*)$/.exec(parsed.pathname);
@@ -11,9 +25,7 @@ export function parseDataURI(uri: string): string {
     if (match == null) { 
         throw new Error()
     }
-    
-    console.log(match);
-    
+
     const buffer = Buffer.from(decodeURIComponent(match[2]), match[1] ? 'base64' : 'utf8');
     return buffer.toString()
 }
@@ -33,7 +45,6 @@ export async function getRandomCollection(): Promise<any> {
 
     const jsonString = parseDataURI(tokenURI)
     const json = JSON.parse(jsonString)
-    // console.log(json);
-    
+
     return json
 }
