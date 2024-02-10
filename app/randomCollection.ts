@@ -10,7 +10,8 @@ export function parseImageDataURI(uri: string): string {
     }
 
     if (uri.includes("svg") && uri.includes("utf8")) {
-        const imageData = uri.split(",")[1]
+        const imageData = uri.split("utf8,")[1]
+
         const base64 = Buffer.from(imageData).toString('base64')
         return "data:image/svg+xml;base64," + base64
     }
