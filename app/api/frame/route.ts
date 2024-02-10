@@ -20,7 +20,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         },
       ],
       image: {
-        src: image,
+        src: `${NEXT_PUBLIC_URL}/park-2.png`,
       },
       ogTitle: name,
       ogDescription: description,
