@@ -35,7 +35,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       ],
       image: {
         src: fixedImage,
-        aspectRatio: '1:1'
+        // aspectRatio: '1:1'
       },
       ogTitle: name,
       ogDescription: description,

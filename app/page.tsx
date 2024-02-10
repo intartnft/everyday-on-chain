@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ],
     image: {
       src: fixedImage,
-      aspectRatio: '1:1'
+      // aspectRatio: '1:1'
     },
     postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
   });
@@ -34,9 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: 'everyday on-chain',
       description: 'LFG',
       images: [{
-        url: fixedImage,
-        width: 500,
-        height: 500
+        url: fixedImage
       }],
     },
     other: {
