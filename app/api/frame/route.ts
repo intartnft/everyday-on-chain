@@ -1,39 +1,29 @@
 import { FrameRequest, getFrameMessage, getFrameHtmlResponse } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
 import { NEXT_PUBLIC_URL } from '../../config';
+import { ethers } from 'ethers';
+import { getRandomCollection } from '../../randomCollection';
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
-  let accountAddress: string | undefined = '';
-  let text: string | undefined = '';
-
-  const body: FrameRequest = await req.json();
-  const { isValid, message } = await getFrameMessage(body, { neynarApiKey: 'NEYNAR_ONCHAIN_KIT' });
-
-  if (isValid) {
-    accountAddress = message.interactor.verified_accounts[0];
-  }
-
-  if (message?.input) {
-    text = message.input;
-  }
-
-  if (message?.button === 3) {
-    return NextResponse.redirect(
-      'https://www.google.com/search?q=cute+dog+pictures&tbm=isch&source=lnms',
-      { status: 302 },
-    );
-  }
+  const randomCollection = await getRandomCollection()
+  console.log(randomCollection);
+  
+  const name = randomCollection["name"]
+  const description = randomCollection["description"]
+  const image = randomCollection["image"]
 
   return new NextResponse(
     getFrameHtmlResponse({
       buttons: [
         {
-          label: `Story: ${text} 🌲`,
+          label: "Show me random",
         },
       ],
       image: {
-        src: `${NEXT_PUBLIC_URL}/park-1.png`,
+        src: image,
       },
+      ogTitle: name,
+      ogDescription: description,
       postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
     }),
   );
