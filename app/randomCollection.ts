@@ -12,6 +12,8 @@ export function parseDataURI(uri: string): string {
         throw new Error()
     }
     
+    console.log(match);
+    
     const buffer = Buffer.from(decodeURIComponent(match[2]), match[1] ? 'base64' : 'utf8');
     return buffer.toString()
 }
@@ -31,6 +33,7 @@ export async function getRandomCollection(): Promise<any> {
 
     const jsonString = parseDataURI(tokenURI)
     const json = JSON.parse(jsonString)
+    // console.log(json);
     
     return json
 }
