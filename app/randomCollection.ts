@@ -9,6 +9,12 @@ const collections = [
     "0xca24e7d9e8a2ba3ada22383f5e2ad397b5677e25"
 ]
 
+export type Collection = {
+    metadata: any,
+    address: string,
+    tokenId: number
+}
+
 export function parseImageDataURI(uri: string): string {
     if (uri.includes("base64")) {
         return uri
@@ -36,16 +42,16 @@ export function parseDataURI(uri: string): string {
     return buffer.toString()
 }
 
-export async function getRandomCollection(): Promise<any> {
+export async function getRandomCollection(): Promise<Collection> {
     const abi = [
         "function totalSupply() public view returns (uint256)",
         "function tokenURI(uint256) public view returns (string)"
     ]
 
-    const collection = collections[Math.floor(Math.random() * collections.length)]
-    
+    const collectionAddress = collections[Math.floor(Math.random() * collections.length)]
+
     const provider = new ethers.JsonRpcProvider("https://eth-mainnet.g.alchemy.com/v2/FFBXRqK9QexBWyV2Z1pFFn-gj_XWKzye", 1);
-    const nftContract = new ethers.Contract(collection, abi, provider)
+    const nftContract = new ethers.Contract(collectionAddress, abi, provider)
     const totalSupplyBig = await nftContract.totalSupply()
     const totalSupply = parseInt(totalSupplyBig)
 
@@ -55,5 +61,9 @@ export async function getRandomCollection(): Promise<any> {
     const jsonString = parseDataURI(tokenURI)
     const json = JSON.parse(jsonString)
 
-    return json
+    return {
+        metadata: json,
+        address: collectionAddress,
+        tokenId: randomToken
+    }
 }

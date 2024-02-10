@@ -7,16 +7,21 @@ import { getRandomCollection, parseImageDataURI } from '../../randomCollection';
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const randomCollection = await getRandomCollection()
   
-  const name = randomCollection["name"]
-  const description = randomCollection["description"]
-  const image = randomCollection["image"]
+  const name = randomCollection.metadata["name"]
+  const description = randomCollection.metadata["description"]
+  const image = randomCollection.metadata["image"]
   const fixedImage = parseImageDataURI(image)
   
   return new NextResponse(
     getFrameHtmlResponse({
       buttons: [
         {
-          label: "Show me random",
+          label: name,
+          action: "link",
+          target: "https://opensea.io/assets/ethereum/" + randomCollection.address + "/" + randomCollection.tokenId
+        },
+        {
+          label: "Show me more",
         },
       ],
       image: {

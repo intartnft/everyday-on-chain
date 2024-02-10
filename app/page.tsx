@@ -5,13 +5,19 @@ import { getRandomCollection, parseImageDataURI } from './randomCollection';
 
 export async function generateMetadata(): Promise<Metadata> {
   const randomCollection = await getRandomCollection()
-  const image = randomCollection["image"]
+  const name = randomCollection.metadata["name"]
+  const image = randomCollection.metadata["image"]
   const fixedImage = parseImageDataURI(image)
 
   const frameMetadata = getFrameMetadata({
     buttons: [
       {
-        label: "Show me random",
+        label: name,
+        action: "link",
+        target: "https://opensea.io/assets/ethereum/" + randomCollection.address + "/" + randomCollection.tokenId
+      },
+      {
+        label: "Show me more",
       },
     ],
     image: {
