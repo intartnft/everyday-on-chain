@@ -1,6 +1,4 @@
-import {
-  getFrameHtmlResponse,
-} from '@coinbase/onchainkit';
+import { getFrameHtmlResponse } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
 import { NEXT_PUBLIC_URL } from '../../config';
 import { getRandomCollection } from '../../randomCollection';
@@ -31,9 +29,9 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  let fixedName = name
+  let fixedName = name;
   if (randomCollection.collection.name) {
-    fixedName = randomCollection.collection.name + " " + name
+    fixedName = randomCollection.collection.name + ' ' + name;
   }
 
   return new NextResponse(

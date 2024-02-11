@@ -6,38 +6,42 @@ import { parseImageDataURI, wrapImageSourceAndEncode } from './imageUtilities';
 import Link from 'next/link';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const randomCollection = await getRandomCollection()
-  const name = randomCollection.metadata["name"]
-  const image = randomCollection.metadata["image"]
+  const randomCollection = await getRandomCollection();
+  const name = randomCollection.metadata['name'];
+  const image = randomCollection.metadata['image'];
 
-  let fixedImage = await parseImageDataURI(image)
+  let fixedImage = await parseImageDataURI(image);
   if (randomCollection.collection.shouldWrap) {
     fixedImage = wrapImageSourceAndEncode(
       fixedImage,
       randomCollection.collection.width,
-      randomCollection.collection.height
-    )
+      randomCollection.collection.height,
+    );
   }
 
-  let fixedName = name
+  let fixedName = name;
   if (randomCollection.collection.name) {
-    fixedName = randomCollection.collection.name + " " + name
+    fixedName = randomCollection.collection.name + ' ' + name;
   }
 
   const frameMetadata = getFrameMetadata({
     buttons: [
       {
         label: fixedName,
-        action: "link",
-        target: "https://opensea.io/assets/ethereum/" + randomCollection.collection.address + "/" + randomCollection.tokenId
+        action: 'link',
+        target:
+          'https://opensea.io/assets/ethereum/' +
+          randomCollection.collection.address +
+          '/' +
+          randomCollection.tokenId,
       },
       {
-        label: "Show me more",
+        label: 'Show me more',
       },
     ],
     image: {
       src: fixedImage,
-      aspectRatio: '1:1'
+      aspectRatio: '1:1',
     },
     postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
   });
@@ -48,14 +52,16 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: 'everyday on-chain',
       description: 'directly from the chain',
-      images: [{
-        url: fixedImage
-      }],
+      images: [
+        {
+          url: fixedImage,
+        },
+      ],
     },
     other: {
       ...frameMetadata,
-    }
-  }
+    },
+  };
 }
 
 export default function Page() {
