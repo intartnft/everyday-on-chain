@@ -1,7 +1,8 @@
 
 export function wrapImageSource(source: string, width: number, height: number) {
+    const maxSize = Math.max(width, height)
     const lines = [
-        '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" viewBox="0 0 ' + width + ' ' + height + '" x="0" y="0" width="' + width + '" height="' + height + '">',
+        '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" viewBox="0 0 ' + maxSize + ' ' + maxSize + '" x="0" y="0" width="' + maxSize + '" height="' + maxSize + '">',
         '<foreignObject x="0" y="0" width="' + width + '" height="' + height + '">',
         '<xhtml:img style="width:100%;height:100%" src="' + source + '"/>',
         '</foreignObject></svg>'
