@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const name = randomCollection.metadata["name"]
   const image = randomCollection.metadata["image"]
 
-  let fixedImage = parseImageDataURI(image)
+  let fixedImage = await parseImageDataURI(image)
   if (randomCollection.collection.shouldWrap) {
     fixedImage = wrapImageSourceAndEncode(
       fixedImage, 

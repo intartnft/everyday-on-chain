@@ -21,7 +21,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     targetImage = imageData
   }
 
-  let fixedImage = parseImageDataURI(image)
+  let fixedImage = await parseImageDataURI(image)
   if (randomCollection.collection.shouldWrap) {
     fixedImage = wrapImageSourceAndEncode(
       fixedImage, 

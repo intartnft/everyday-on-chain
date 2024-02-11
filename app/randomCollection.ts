@@ -1,16 +1,15 @@
 import { ethers } from "ethers";
 import { MAINNET_PROVIDER_URL } from "./config";
-
+import { encode } from "node-base64-image";
 const abi = [
     "function tokenURI(uint256) public view returns (string)"
 ]
 
 
 const collections = [
-    {address: "0x18adc812fe66b9381700c2217f0c9dc816c879e6", shouldWrap: true, width: 630, height: 630},
-    {address: "0x4e1f41613c9084fdb9e34e11fae9412427480e56", shouldWrap: true, width: 388, height: 560},
-    {address: "0xccbe56ea12b845a281431290f202196864f2f576", shouldWrap: true, width: 900, height: 1200},
-    {address: "0xca24e7d9e8a2ba3ada22383f5e2ad397b5677e25", shouldWrap: true, width: 20000, height: 20000},
+    { address: "0x18adc812fe66b9381700c2217f0c9dc816c879e6", shouldWrap: true, width: 630, height: 630 },
+    { address: "0x4e1f41613c9084fdb9e34e11fae9412427480e56", shouldWrap: true, width: 388, height: 560 },
+    { address: "0xca24e7d9e8a2ba3ada22383f5e2ad397b5677e25", shouldWrap: true, width: 20000, height: 20000 },
 ]
 
 export type Collection = {
@@ -26,18 +25,22 @@ export type SelectedCollectionToken = {
     tokenId: number
 }
 
-export function parseImageDataURI(uri: string): string {
+export async function parseImageDataURI(uri: string): Promise<string> {
     if (uri.includes("base64")) {
         return uri
     }
 
     if (uri.includes("svg") && uri.includes("utf8")) {
         const imageData = uri.split("utf8,")[1]
-
         const base64 = Buffer.from(imageData).toString('base64')
         return "data:image/svg+xml;base64," + base64
     }
 
+    if (uri.includes("http")) {
+        const imageData = await encode(uri)
+        return "data:image/svg+xml;base64," + imageData
+    }
+    
     return uri
 }
 
@@ -82,7 +85,7 @@ export async function getRandomCollection(): Promise<SelectedCollectionToken> {
 
     const json = JSON.parse(jsonString)
     console.log(json["image"])
-    
+
     return {
         metadata: json,
         collection: collection,
