@@ -19,10 +19,8 @@ export async function getRandomCollection(): Promise<SelectedCollectionToken> {
 
     const provider = new ethers.JsonRpcProvider(MAINNET_PROVIDER_URL, 1);
     const nftContract = new ethers.Contract(collection.address, abi, provider);
-    const totalSupplyBig = await nftContract.totalSupply();
-    const totalSupply = parseInt(totalSupplyBig);
 
-    const randomToken = Math.floor(Math.random() * (totalSupply - 1)) + 1;
+    const randomToken = Math.floor(Math.random() * (collection.totalSupply - 1)) + 1;
     const tokenURI = await nftContract.tokenURI(randomToken);
 
     let jsonString = parseDataURI(tokenURI);

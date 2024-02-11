@@ -1,12 +1,8 @@
 import {
-  FrameImageMetadata,
-  getFrameMessage,
   getFrameHtmlResponse,
-  FrameMetadata,
 } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
 import { NEXT_PUBLIC_URL } from '../../config';
-import { ethers } from 'ethers';
 import { getRandomCollection } from '../../randomCollection';
 import { parseImageDataURI, wrapImageSourceAndEncode } from '../../imageUtilities';
 
