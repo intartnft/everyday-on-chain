@@ -9,10 +9,12 @@ export async function parseImageDataURI(uri: string): Promise<string> {
     const imageData = uri.split('utf8,')[1];
     const base64 = Buffer.from(imageData).toString('base64');
     return 'data:image/svg+xml;base64,' + base64;
-  }else if (uri.includes('http')) {
-    const base64 = await encode(uri, {string: true})
-    return 'data:image/image;base64,' + base64
   }
+
+//   else if (uri.includes('http')) {
+//     const base64 = await encode(uri, {string: true})
+//     return 'data:image/image;base64,' + base64
+//   }
 
   return uri;
 }
