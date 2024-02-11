@@ -26,7 +26,7 @@ export const collections: Collection[] = [
   },
   {
     address: '0xccbe56ea12b845a281431290f202196864f2f576', //GOLD
-    shouldWrap: true,
+    shouldWrap: false,
     width: 900,
     height: 1200,
     totalSupply: 500,
@@ -34,7 +34,7 @@ export const collections: Collection[] = [
   },
   {
     address: '0xA1A657de1F522F15a7336942145Fa3C5432Dd44E', //Panopticon
-    shouldWrap: true,
+    shouldWrap: false,
     width: 1000,
     height: 1333,
     totalSupply: 600,
