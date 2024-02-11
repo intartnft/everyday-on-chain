@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { NEXT_PUBLIC_URL } from '../../config';
 import { ethers } from 'ethers';
 import { getRandomCollection, parseImageDataURI } from '../../randomCollection';
+import { wrapImageSourceAndEncode } from '../../svgWrapper';
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const randomCollection = await getRandomCollection()
@@ -19,15 +20,23 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   }else if (imageData) {
     targetImage = imageData
   }
-  const fixedImage = parseImageDataURI(targetImage)
-  
+
+  let fixedImage = parseImageDataURI(image)
+  if (randomCollection.collection.shouldWrap) {
+    fixedImage = wrapImageSourceAndEncode(
+      fixedImage, 
+      randomCollection.collection.width, 
+      randomCollection.collection.height
+    )
+  }
+
   return new NextResponse(
     getFrameHtmlResponse({
       buttons: [
         {
           label: name,
           action: "link",
-          target: "https://opensea.io/assets/ethereum/" + randomCollection.address + "/" + randomCollection.tokenId
+          target: "https://opensea.io/assets/ethereum/" + randomCollection.collection.address + "/" + randomCollection.tokenId
         },
         {
           label: "Show me more",

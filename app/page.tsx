@@ -2,19 +2,28 @@ import { getFrameMetadata } from '@coinbase/onchainkit';
 import type { Metadata } from 'next';
 import { NEXT_PUBLIC_URL } from './config';
 import { getRandomCollection, parseImageDataURI } from './randomCollection';
+import { wrapImageSourceAndEncode } from './svgWrapper';
 
 export async function generateMetadata(): Promise<Metadata> {
   const randomCollection = await getRandomCollection()
   const name = randomCollection.metadata["name"]
   const image = randomCollection.metadata["image"]
-  const fixedImage = parseImageDataURI(image)
+
+  let fixedImage = parseImageDataURI(image)
+  if (randomCollection.collection.shouldWrap) {
+    fixedImage = wrapImageSourceAndEncode(
+      fixedImage, 
+      randomCollection.collection.width, 
+      randomCollection.collection.height
+    )
+  }
 
   const frameMetadata = getFrameMetadata({
     buttons: [
       {
         label: name,
         action: "link",
-        target: "https://opensea.io/assets/ethereum/" + randomCollection.address + "/" + randomCollection.tokenId
+        target: "https://opensea.io/assets/ethereum/" + randomCollection.collection.address + "/" + randomCollection.tokenId
       },
       {
         label: "Show me more",
@@ -46,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function Page() {
   return (
     <>
-      <h1>zizzamia.xyz</h1>
+      <h1>int.art</h1>
     </>
   );
 }
